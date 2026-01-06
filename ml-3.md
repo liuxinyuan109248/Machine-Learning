@@ -165,6 +165,12 @@ $$
 
 <span style="color: #6FA8FF">**Proof Sketch:**</span> Taking derivative w.r.t. $y(i)$ and setting it to zero, $\log y(i)+1-\log x_k(i)+\alpha\nabla f(x_k)(i)+\lambda=0$, where $\lambda$ is the Lagrange multiplier for the constraint $\sum_{i=1}^ny(i)=1$. Therefore, $y(i)=x_k(i)\exp(-\alpha\cdot\nabla f(x_k)(i)-\lambda)$. Using the constraint gives the MWU update.
 
+<span style="color: #6FA8FF">**Jensen-Shannon Divergence:**</span> $JS(p,q)=\dfrac{1}{2}KL\left(p\Big\|\dfrac{p+q}{2}\right)+\dfrac{1}{2}KL\left(q\Big\|\dfrac{p+q}{2}\right)$
+
+<span style="color: #6FA8FF">**Wasserstein Distance:**</span> $W_1(p,q)=\inf_{\gamma\in\Gamma(p,q)}\mathbb{E}_{(X,Y)\sim\gamma}[\|X-Y\|]$, where $\Gamma(p,q)$ is the set of all joint distributions with marginals $p$ and $q$. Alternatively, by <span style="color: #6FA8FF">**Kantorovich-Rubinstein duality**</span>, $W_1(p,q)=\sup_{\|f\|_{Lip}\le 1}\mathbb{E}_{X\sim p}[f(X)]-\mathbb{E}_{Y\sim q}[f(Y)]$.
+
+<span style="color: #6FA8FF">**Comparison of Probability Metrics:**</span> $W_1$ distance is "smoother" than TV and JS, which in turn are "smoother" than KL.
+
 ### <span style="color: #6ED3C5">Comparison of GD, SGD, SVRG and MD</span>
 
 | Method | Assumptions on $f$ | Oracle Complexity to Achieve $\epsilon$-Optimal Solution |

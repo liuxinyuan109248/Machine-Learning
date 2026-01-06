@@ -50,12 +50,17 @@ $$(1 - \epsilon) \|u - v\|^2 \leq \|f(u) - f(v)\|^2 \leq (1 + \epsilon) \|u - v\
 
 <span style="color: #6FA8FF">**Theorem:**</span> Given an $(R, cR, P_1, P_2)$-sensitive family $\mathcal{H}$ with $P_1 > P_2$ and parameters $k = \log_{1/P_2} n$ and $L = n^{\rho}$ where $\rho = \dfrac{\log(1/P_1)}{\log(1/P_2)}$, the above LSH scheme solves the randomized $c$-approximate $R$-near neighbor problem with space complexity $O(n^{1+\rho})$ and query time $O(n^{\rho})$. To be specific, if there exists $x \in X$ such that $\|x - q\| \leq R$, the scheme returns some $x' \in X$ such that $\|x' - q\| \leq cR$ with probability at least $\dfrac{1}{2} - \dfrac{1}{e}$.
 
-<span style="color: #6FA8FF">**Proof:**</span> For a query point $q$, let $S$ be the set of points in $X$ such that $\|x - q\| \leq R$ and $T$ be the set of points in $X$ such that $\|x - q\| \geq cR$. We have
+<details>
+  <summary><b><font color="#6FA8FF">Proof:</font></b> (Click to expand)</summary>
+
+For a query point $q$, let $S$ be the set of points in $X$ such that $\|x - q\| \leq R$ and $T$ be the set of points in $X$ such that $\|x - q\| \geq cR$.
 
 - $\Pr[\text{no point in } S \text{ is found}] \leq (1 - P_1^k)^L \leq e^{-L P_1^k} = e^{-n^{\rho} \cdot n^{-\rho}} = e^{-1}$
 - $\mathbb{E}[\text{number of points in } T \text{ found}] \leq |T| \cdot L P_2^k \leq n \cdot n^{\rho} \cdot n^{-\rho} = L$
 
 By Markov's inequality, the probability that more than $2L$ points in $T$ are found is at most $\dfrac{1}{2}$. Therefore, the probability that at least one point in $S$ is found and at most $2L$ points in $T$ are found is at least $\dfrac{1}{2} - \dfrac{1}{e}$.
+
+</details>
 
 ### <span style="color: #6ED3C5">LSH for Euclidean Distance</span>
 

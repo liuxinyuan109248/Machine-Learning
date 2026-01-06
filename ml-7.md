@@ -29,7 +29,7 @@
   
   s.t. $0\le a_i\le \lambda,\forall i=1,2,\ldots,N,\sum_{i=1}^Na_iy_i=0$, and $w=\sum_{i=1}^Na_iy_i\phi(x_i)$
 - kernel function: $K(x_i,x_j)=\phi(x_i)^T\phi(x_j)$
-- if the kernel function satisfies Mercer's condition (the kernel matrix is positive semi-definite), then there exists a mapping function $\phi(\cdot)$ such that $K(x_i,x_j)=\phi(x_i)^T\phi(x_j)$
+- if the kernel function satisfies <span style="color: #6FA8FF">**Mercer's condition**</span> (the kernel matrix is positive semi-definite), then there exists a mapping function $\phi(\cdot)$ such that $K(x_i,x_j)=\phi(x_i)^T\phi(x_j)$
 - Gaussian (RBF) kernel: $K(x_i,x_j)=\exp\left(-\dfrac{\|x_i-x_j\|_2^2}{2\sigma^2}\right)$
 - dual: maximize $L(a)=\sum_{i=1}^Na_i+b\sum_{i=1}^Na_iy_i-\dfrac{1}{2}\sum_{i=1}^N\sum_{j=1}^Na_ia_jy_iy_jK(x_i,x_j)$
   

@@ -27,19 +27,20 @@ Random forests reduce variance by averaging multiple deep trees trained on diffe
   - update weights: $D_{t+1}(i) = \dfrac{D_t(i) \exp(-\alpha_t y_i h_t(x_i))}{Z_t}$, where $Z_t$ is a normalization factor
 - final classifier: $H(x) = \text{sign}\left(\sum_{t=1}^{T} \alpha_t h_t(x)\right)$
 
-<span style="color: #6FA8FF">**Theorem:**</span> If we write $\epsilon_t = \dfrac{1}{2} - \gamma_t$, the training error of the final classifier $H(x)$ is bounded by:
-$$\text{Training Error} \leq \exp\left(-2 \sum_{t=1}^{T} \gamma_t^2\right)$$
+<span style="color: #6FA8FF">**Theorem:**</span> If we write $\epsilon_t = \dfrac{1}{2} - \gamma_t$, the training error of the final classifier $H(x)$ is bounded by $\text{Training Error} \leq \exp\left(-2 \sum_{t=1}^{T} \gamma_t^2\right)$.
 
-<span style="color: #6FA8FF">**Proof:**</span> Let $f(x) = \sum_{t=1}^{T} \alpha_t h_t(x)$, then $H(x) = \text{sign}(f(x))$. The training error can be bounded as follows:
+<details>
+  <summary><b><font color="#6FA8FF">Proof:</font></b> (Click to expand)</summary>
+  
+Let $f(x) = \sum_{t=1}^{T} \alpha_t h_t(x)$, then $H(x) = \text{sign}(f(x))$. The training error can be bounded as follows:
 $$\text{Training Error} = \dfrac{1}{N} \sum_{i=1}^{N} \mathbb{1}(H(x_i) \neq y_i) \leq \dfrac{1}{N} \sum_{i=1}^{N} \exp(-y_i f(x_i))$$
-Unrolling the weight updates, we have:
-$$D_{T+1}(i) = \dfrac{1}{N} \prod_{t=1}^{T} \dfrac{\exp(-\alpha_t y_i h_t(x_i))}{Z_t} = \dfrac{\exp(-y_i f(x_i))}{N \prod_{t=1}^{T} Z_t}$$
-Next, we compute $Z_t$:
+Unrolling the weight updates, we have: $D_{T+1}(i) = \dfrac{1}{N} \prod_{t=1}^{T} \dfrac{\exp(-\alpha_t y_i h_t(x_i))}{Z_t} = \dfrac{\exp(-y_i f(x_i))}{N \prod_{t=1}^{T} Z_t}$. Next, we compute $Z_t$:
 $$Z_t = \sum_{i=1}^{N} D_t(i) \exp(-\alpha_t y_i h_t(x_i)) = (1 - \epsilon_t) \exp(-\alpha_t) + \epsilon_t \exp(\alpha_t) = 2 \sqrt{\epsilon_t (1 - \epsilon_t)} = \sqrt{1 - 4 \gamma_t^2} \leq \exp(-2 \gamma_t^2)$$
-Putting it all together:
-$$\text{Training Error} \leq \prod_{t=1}^{T} Z_t \leq \exp\left(-2 \sum_{t=1}^{T} \gamma_t^2\right)$$
+Putting it all together: $\text{Training Error} \leq \prod_{t=1}^{T} Z_t \leq \exp\left(-2 \sum_{t=1}^{T} \gamma_t^2\right)$.
 
-**Theorem:** Let $S$ be a sample of size $m$ drawn i.i.d. according to distribution $D$. Let $H$ be a finite hypothesis class. For any $\delta > 0$, with probability at least $1 - \delta$, every weighted average hypothesis $f$ satisfies for all $\theta > 0$:
+</details>
+
+<span style="color: #6FA8FF">**Theorem:**</span> Let $S$ be a sample of size $m$ drawn i.i.d. according to distribution $D$. Let $H$ be a finite hypothesis class. For any $\delta > 0$, with probability at least $1 - \delta$, every weighted average hypothesis $f$ satisfies for all $\theta > 0$:
 $$P_D[y f(x) \leq 0] \leq P_S[y f(x) \leq \theta] + O\left(\sqrt{\dfrac{\log |H|}{m \theta^2}} + \sqrt{\dfrac{\log(1/\delta)}{m}}\right)$$
 
 - modification of AdaBoost: $f(x) = \dfrac{\sum_{t=1}^{T} \alpha_t h_t(x)}{\sum_{t=1}^{T} \alpha_t}$
@@ -47,18 +48,22 @@ $$P_D[y f(x) \leq 0] \leq P_S[y f(x) \leq \theta] + O\left(\sqrt{\dfrac{\log |H|
 <span style="color: #6FA8FF">**Theorem:**</span> AdaBoost generates a sequence of hypotheses $h_1, \ldots, h_T$ with training errors $\epsilon_1, \ldots, \epsilon_T$. Then for any $\theta > 0$, we have:
 $$P_S[y f(x) \leq \theta] \leq 2^T \prod_{t=1}^{T} \sqrt{\epsilon_t^{1 - \theta} (1 - \epsilon_t)^{1 + \theta}}$$
 
-<span style="color: #6FA8FF">**Proof:**</span> Note that:
-$$y f(x) \leq \theta \iff \sum_{t=1}^{T} \alpha_t y h_t(x) \leq \theta \sum_{t=1}^{T} \alpha_t \implies \exp\left(-\sum_{t=1}^{T} \alpha_t y h_t(x) + \theta \sum_{t=1}^{T} \alpha_t\right) \geq 1$$
-Using Markov's inequality:
+<details>
+  <summary><b><font color="#6FA8FF">Proof:</font></b> (Click to expand)</summary>
+  
+Note that $y f(x) \leq \theta \iff \sum_{t=1}^{T} \alpha_t y h_t(x) \leq \theta \sum_{t=1}^{T} \alpha_t \implies \exp\left(-\sum_{t=1}^{T} \alpha_t y h_t(x) + \theta \sum_{t=1}^{T} \alpha_t\right) \geq 1$. By Markov's inequality:
 $$
 \begin{aligned}
 P_S[y f(x) \leq \theta] \leq& E_S\left[\exp\left(-\sum_{t=1}^{T} \alpha_t y h_t(x) + \theta \sum_{t=1}^{T} \alpha_t\right)\right] = \frac{\exp\left(\theta \sum_{t=1}^{T} \alpha_t\right)}{m} \sum_{i=1}^{m} \exp\left(-\sum_{t=1}^{T} \alpha_t y_i h_t(x_i)\right) \\
 =& \exp\left(\theta \sum_{t=1}^{T} \alpha_t\right) \prod_{t=1}^{T} Z_t = \sqrt{\prod_{t=1}^{T} \left(\frac{1 - \epsilon_t}{\epsilon_t}\right)^{\theta}} \cdot 2^T \prod_{t=1}^{T} \sqrt{\epsilon_t (1 - \epsilon_t)} = 2^T \prod_{t=1}^{T} \sqrt{\epsilon_t^{1 - \theta} (1 - \epsilon_t)^{1 + \theta}} \\
 \end{aligned}
 $$
-If $\epsilon_t \leq \dfrac{1}{2} - \gamma$ for all $t$, then:
-$$P_S[y f(x) \leq \theta] \leq 2^T \left(\sqrt{\left(\dfrac{1}{2} - \gamma\right)^{1 - \theta} \left(\dfrac{1}{2} + \gamma\right)^{1 + \theta}}\right)^T = \left(\sqrt{(1 - 2\gamma)^{1 - \theta} (1 + 2\gamma)^{1 + \theta}}\right)^T$$
-If $\theta < \gamma$, then $(1 - 2\gamma)^{1 - \theta} (1 + 2\gamma)^{1 + \theta} < 1$ and the training margin error decreases exponentially with $T$
+
+</details>
+
+<span style="color: #6FA8FF">**Corollary:**</span> If $\epsilon_t \leq \dfrac{1}{2} - \gamma$ for all $t$ and $\theta < \gamma$, then the training margin error decreases exponentially with $T$.
+
+<span style="color: #6FA8FF">**Proof:**</span> $P_S[y f(x) \leq \theta] \leq \left(\sqrt{(1 - 2\gamma)^{1 - \theta} (1 + 2\gamma)^{1 + \theta}}\right)^T$ and $(1 - 2\gamma)^{1 - \theta} (1 + 2\gamma)^{1 + \theta} < 1$.
 
 ### <span style="color: #6ED3C5">Coordinate Descent</span>
 
