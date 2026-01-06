@@ -98,11 +98,11 @@ and therefore $\mathbb{E}[f(\tilde{x}_s)-f(x^*)]\le\left(\dfrac{2L\eta}{1-2L\eta
 
 <span style="color: #6FA8FF">**Comparison of SVRG, SAG and SAGA:**</span>
 
-| Method | Convergence Rate | Stochastic Gradient Biased? | Storage Cost |
+| Method | Linear Convergence Rate | Stochastic Gradient Biased? | Storage Cost |
 |--------|------------------|-----------------------------|--------------|
 | SVRG   | $\dfrac{2L\eta}{1-2L\eta}+\dfrac{1}{m\mu\eta(1-2L\eta)}$ | No                          | O(d)         |
-| SAG    | $1 - \min\left\{\dfrac{1}{16\kappa},\dfrac{1}{10n}\right\}, \quad \eta = \dfrac{1}{16L}$ | Yes                         | O(nd)        |
-| SAGA   | $1 - \min\left\{\dfrac{1}{3\kappa},\dfrac{1}{4n}\right\}, \quad \eta = \dfrac{1}{3L}$  | No                          | O(nd)       |
+| SAG    | $1 - \min\left\{\dfrac{\mu}{16L},\dfrac{1}{10n}\right\}, \quad \eta = \dfrac{1}{16L}$ | Yes                         | O(nd)        |
+| SAGA   | $1 - \min\left\{\dfrac{\mu}{3L},\dfrac{1}{4n}\right\}, \quad \eta = \dfrac{1}{3L}$  | No                          | O(nd)       |
 
 ### <span style="color: #6ED3C5">Mirror Descent</span>
 
@@ -164,3 +164,14 @@ $$
 <span style="color: #6FA8FF">**Proposition:**</span> MWU is equivalent to mirror descent with $w(x)=\sum_i x_i\log x_i$ given the constraint that $x$ lies in the probability simplex $\Delta_n=\{x\in\mathbb{R}^n:x(i)\ge 0,\sum_{i=1}^nx(i)=1\}$.
 
 <span style="color: #6FA8FF">**Proof Sketch:**</span> Taking derivative w.r.t. $y(i)$ and setting it to zero, $\log y(i)+1-\log x_k(i)+\alpha\nabla f(x_k)(i)+\lambda=0$, where $\lambda$ is the Lagrange multiplier for the constraint $\sum_{i=1}^ny(i)=1$. Therefore, $y(i)=x_k(i)\exp(-\alpha\cdot\nabla f(x_k)(i)-\lambda)$. Using the constraint gives the MWU update.
+
+### <span style="color: #6ED3C5">Comparison of GD, SGD, SVRG and MD</span>
+
+| Method | Assumptions on $f$ | Oracle Complexity to Achieve $\epsilon$-Optimal Solution |
+|:---|:---|:---|
+| **GD** | Convex, $L$-smooth | $O\left(\dfrac{L}{\epsilon}\right)$ |
+| **GD** | $\mu$-Strongly Convex, $L$-smooth | $O\left(\dfrac{L}{\mu}\log(1/\epsilon)\right)$, i.e., linear convergence rate $1-\dfrac{\mu}{L}$ |
+| **SGD** | Convex, $L$-smooth | $O\left(\dfrac{\sigma^2}{\epsilon^2}\right)$, where $\sigma^2$ is the variance of stochastic gradient |
+| **SVRG** | $\mu$-Strongly Convex, $L$-smooth | Linear convergence rate $\dfrac{2L\eta}{1-2L\eta}+\dfrac{1}{m\mu\eta(1-2L\eta)}$ |
+| **MD** | Convex, $\rho$-Lipschitz w.r.t. $\|\cdot\|_2$<br>(i.e., $\|\nabla f(x)\|_2 \le \rho$) | $O\left(\dfrac{\rho^2}{\epsilon^2}\right)$, where $w$ is 1-strongly convex w.r.t. $\|\cdot\|_2$<br>(e.g., $w(x)=\dfrac{1}{2}\|x\|_2^2$, $V_x(y)=\dfrac{1}{2}\|y-x\|_2^2$) |
+| **MD** | Convex, $\rho$-Lipschitz w.r.t. $\|\cdot\|_\infty$<br>(i.e., $\|\nabla f(x)\|_\infty \le \rho$) | $O\left(\dfrac{\rho^2}{\epsilon^2}\right)$, where $w$ is 1-strongly convex w.r.t. $\|\cdot\|_1$<br>(e.g., $w(x)=\sum_i x_i \log x_i$, $V_x(y)=KL(y\|x)$) |

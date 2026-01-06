@@ -146,7 +146,7 @@
 
 ### <span style="color: #6ED3C5">Convex Function Convergence</span>
 
-<span style="color: #6FA8FF">**Theorem:**</span> If $f$ is convex and $L$-smooth and $x^*=\arg\min f(x)$, then running gradient descent with step size $\eta\le\dfrac{1}{L}$ gives $f(x_t)-f(x^*)\le\dfrac{\|x_0-x^*\|^2}{2\eta t}$, and therefore $T=\dfrac{L\|x_0-x^*\|^2}{2\eta L\epsilon}$ iterations are sufficient to achieve $f(x_T)-f(x^*)\le\epsilon$.
+<span style="color: #6FA8FF">**Theorem:**</span> If $f$ is convex and $L$-smooth and $x^*=\arg\min f(x)$, then running gradient descent with step size $\eta\le\dfrac{1}{L}$ gives $f(x_t)-f(x^*)\le\dfrac{\|x_0-x^*\|^2}{2\eta t}$, and therefore $T=\dfrac{\|x_0-x^*\|^2}{2\eta\epsilon}$ iterations are sufficient to achieve $f(x_T)-f(x^*)\le\epsilon$.
 
 <details>
   <summary><b><font color="#6FA8FF">Proof:</font></b> (Click to expand)</summary>
