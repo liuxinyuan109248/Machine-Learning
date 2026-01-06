@@ -25,16 +25,16 @@ Random forests reduce variance by averaging multiple deep trees trained on diffe
   - compute error $\epsilon_t = P_{i \sim D_t}[h_t(x_i) \neq y_i]$
   - compute classifier weight $\alpha_t = \dfrac{1}{2} \ln\left(\dfrac{1 - \epsilon_t}{\epsilon_t}\right)$
   - update weights: $D_{t+1}(i) = \dfrac{D_t(i) \exp(-\alpha_t y_i h_t(x_i))}{Z_t}$, where $Z_t$ is a normalization factor
-- final classifier: $H(x) = \text{sign}\left(\sum_{t=1}^{T} \alpha_t h_t(x)\right)$
+- final classifier: $H(x) = \text{sign}(f(x))$, where $f(x)=\sum_{t=1}^{T} \alpha_t h_t(x)$
 
 <span style="color: #6FA8FF">**Theorem:**</span> If we write $\epsilon_t = \dfrac{1}{2} - \gamma_t$, the training error of the final classifier $H(x)$ is bounded by $\text{Training Error} \leq \exp\left(-2 \sum_{t=1}^{T} \gamma_t^2\right)$.
 
 <details>
   <summary><b><font color="#6FA8FF">Proof:</font></b> (Click to expand)</summary>
   
-Let $f(x) = \sum_{t=1}^{T} \alpha_t h_t(x)$, then $H(x) = \text{sign}(f(x))$. The training error can be bounded as follows:
-$$\text{Training Error} = \dfrac{1}{N} \sum_{i=1}^{N} \mathbb{1}(H(x_i) \neq y_i) \leq \dfrac{1}{N} \sum_{i=1}^{N} \exp(-y_i f(x_i))$$
-Unrolling the weight updates, we have: $D_{T+1}(i) = \dfrac{1}{N} \prod_{t=1}^{T} \dfrac{\exp(-\alpha_t y_i h_t(x_i))}{Z_t} = \dfrac{\exp(-y_i f(x_i))}{N \prod_{t=1}^{T} Z_t}$. Next, we compute $Z_t$:
+The training error can be bounded as follows:
+$\text{Training Error} = \dfrac{1}{N} \sum_{i=1}^{N} \mathbb{1}(H(x_i) \neq y_i) \leq \dfrac{1}{N} \sum_{i=1}^{N} \exp(-y_i f(x_i))$.
+Unrolling the weight updates, we have $D_{T+1}(i) = \dfrac{1}{N} \prod_{t=1}^{T} \dfrac{\exp(-\alpha_t y_i h_t(x_i))}{Z_t} = \dfrac{\exp(-y_i f(x_i))}{N \prod_{t=1}^{T} Z_t}$. Next, we compute $Z_t$:
 $$Z_t = \sum_{i=1}^{N} D_t(i) \exp(-\alpha_t y_i h_t(x_i)) = (1 - \epsilon_t) \exp(-\alpha_t) + \epsilon_t \exp(\alpha_t) = 2 \sqrt{\epsilon_t (1 - \epsilon_t)} = \sqrt{1 - 4 \gamma_t^2} \leq \exp(-2 \gamma_t^2)$$
 Putting it all together: $\text{Training Error} \leq \prod_{t=1}^{T} Z_t \leq \exp\left(-2 \sum_{t=1}^{T} \gamma_t^2\right)$.
 
@@ -43,10 +43,7 @@ Putting it all together: $\text{Training Error} \leq \prod_{t=1}^{T} Z_t \leq \e
 <span style="color: #6FA8FF">**Theorem:**</span> Let $S$ be a sample of size $m$ drawn i.i.d. according to distribution $D$. Let $H$ be a finite hypothesis class. For any $\delta > 0$, with probability at least $1 - \delta$, every weighted average hypothesis $f$ satisfies for all $\theta > 0$:
 $$P_D[y f(x) \leq 0] \leq P_S[y f(x) \leq \theta] + O\left(\sqrt{\dfrac{\log |H|}{m \theta^2}} + \sqrt{\dfrac{\log(1/\delta)}{m}}\right)$$
 
-- modification of AdaBoost: $f(x) = \dfrac{\sum_{t=1}^{T} \alpha_t h_t(x)}{\sum_{t=1}^{T} \alpha_t}$
-
-<span style="color: #6FA8FF">**Theorem:**</span> AdaBoost generates a sequence of hypotheses $h_1, \ldots, h_T$ with training errors $\epsilon_1, \ldots, \epsilon_T$. Then for any $\theta > 0$, we have:
-$$P_S[y f(x) \leq \theta] \leq 2^T \prod_{t=1}^{T} \sqrt{\epsilon_t^{1 - \theta} (1 - \epsilon_t)^{1 + \theta}}$$
+<span style="color: #6FA8FF">**Theorem:**</span> AdaBoost generates a sequence of hypotheses $h_1, \ldots, h_T$ with training errors $\epsilon_1, \ldots, \epsilon_T$. If $f(x) = \dfrac{\sum_{t=1}^{T} \alpha_t h_t(x)}{\sum_{t=1}^{T} \alpha_t}$, then for any $\theta > 0$, we have $P_S[y f(x) \leq \theta] \leq 2^T \prod_{t=1}^{T} \sqrt{\epsilon_t^{1 - \theta} (1 - \epsilon_t)^{1 + \theta}}$.
 
 <details>
   <summary><b><font color="#6FA8FF">Proof:</font></b> (Click to expand)</summary>

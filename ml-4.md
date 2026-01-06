@@ -15,7 +15,7 @@
   - for $t=1,2,\ldots,T$
     - fix $Y_{t-1}$, update $X_t$ by solving $\min_X\|P_\Omega(XY_{t-1}^T)-P_\Omega(M)\|_F^2$
     - fix $X_t$, update $Y_t$ by solving $\min_Y\|P_\Omega(X_tY^T)-P_\Omega(M)\|_F^2$
-- singular value thresholding: apply soft-thresholding to singular values
+- **singular value thresholding:** apply soft-thresholding to singular values
 
 for stationary points $\nabla f(x)=0$
 
