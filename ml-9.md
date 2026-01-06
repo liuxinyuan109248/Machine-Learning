@@ -45,8 +45,8 @@ $$(1 - \epsilon) \|u - v\|^2 \leq \|f(u) - f(v)\|^2 \leq (1 + \epsilon) \|u - v\
   - if $\|x - y\| \leq R$, $\Pr[G(x) = G(y)] \geq 1 - (1 - P_1^k)^L$
   - if $\|x - y\| \geq cR$, $\Pr[G(x) = G(y)] \leq L P_2^k$
   - definition of $G(x) = G(y)$: there exists some $i$ such that $g_i(x) = g_i(y)$
-- overall LSH scheme: Use $L$ hash tables, each with a hash function from the amplified family. For a query point $q$, check all $L$ hash tables to find candidate points and verify them. Stop the search after $2L+1$ points have been checked.
-- data structure size: $O(n L)$ (the size of each hash table is $O(n)$)
+- **overall LSH scheme:** Use $L$ hash tables, each with a hash function from the amplified family. For a query point $q$, check all $L$ hash tables to find candidate points and verify them. Stop the search after $2L+1$ points have been checked.
+- **data structure size:** $O(n L)$ (the size of each hash table is $O(n)$)
 
 <span style="color: #6FA8FF">**Theorem:**</span> Given an $(R, cR, P_1, P_2)$-sensitive family $\mathcal{H}$ with $P_1 > P_2$ and parameters $k = \log_{1/P_2} n$ and $L = n^{\rho}$ where $\rho = \dfrac{\log(1/P_1)}{\log(1/P_2)}$, the above LSH scheme solves the randomized $c$-approximate $R$-near neighbor problem with space complexity $O(n^{1+\rho})$ and query time $O(n^{\rho})$. To be specific, if there exists $x \in X$ such that $\|x - q\| \leq R$, the scheme returns some $x' \in X$ such that $\|x' - q\| \leq cR$ with probability at least $\dfrac{1}{2} - \dfrac{1}{e}$.
 
@@ -62,10 +62,17 @@ By Markov's inequality, the probability that more than $2L$ points in $T$ are fo
 
 </details>
 
-### <span style="color: #6ED3C5">LSH for Euclidean Distance</span>
+### <span style="color: #6ED3C5">$\ell_2$ LSH family</span>
 
-- hash function: $h_{a,b}(v) = \left\lfloor \dfrac{a \cdot v + b}{w} \right\rfloor$, where $a$ is a random vector with each entry drawn from $\mathcal{N}(0, 1)$, $b$ is drawn uniformly from $[0, w)$, and $w$ is a fixed width parameter
-- collision probability: $\Pr[h_{a,b}(u) = h_{a,b}(v)] = p(d) = \displaystyle \int_0^w \dfrac{1}{d} f\left(\dfrac{t}{d}\right) \left(1 - \dfrac{t}{w}\right) dt$, where $d = \|u - v\|$ and $f(x) = \sqrt{\dfrac{2}{\pi}} e^{-x^2/2}$ is the PDF of the half-normal distribution
+<span style="color: #6FA8FF">**Theorem:**</span> The family of hash functions defined by $h_{a,b}(v) = \left\lfloor \dfrac{a \cdot v + b}{w} \right\rfloor$, where $a$ is a random vector with each entry drawn from Gaussian distribution $\mathcal{N}(0, 1)$, $b$ is drawn uniformly from $[0, w)$, and $w$ is a fixed width parameter, is an $(R, cR, P_1, P_2)$-sensitive family for $\ell_2$ distance with $P_1 = p(R)$ and $P_2 = p(cR)$, where $p(d) = \displaystyle \int_0^w \dfrac{1}{d} f\left(\dfrac{t}{d}\right) \left(1 - \dfrac{t}{w}\right) dt$ and $f(x) = \sqrt{\dfrac{2}{\pi}} e^{-x^2/2}$ is the PDF of the half-normal distribution.
+
+<span style="color: #6FA8FF">**Proof Sketch:**</span> The probability that $h_{a,b}(x) = h_{a,b}(y)$ depends on the distance $\|x - y\|$. By projecting onto the random vector $a$, the difference $a \cdot (x - y)$ follows a normal distribution with mean 0 and variance $\|x - y\|^2$. The absolute value $|a \cdot (x - y)|$ thus follows a half-normal distribution. The hash values collide if the projected distance falls within the same interval of width $w$, leading to the integral expression for $p(d)$.
+
+### <span style="color: #6ED3C5">$\ell_1$ LSH family</span>
+
+<span style="color: #6FA8FF">**Theorem:**</span> The family of hash functions defined by $h_{a,b}(v) = \left\lfloor \dfrac{a \cdot v + b}{w} \right\rfloor$, where $a$ is a random vector with each entry drawn from Cauchy distribution $\text{Cauchy}(0, 1)$, $b$ is drawn uniformly from $[0, w)$, and $w$ is a fixed width parameter, is an $(R, cR, P_1, P_2)$-sensitive family for $\ell_1$ distance with $P_1 = p(R)$ and $P_2 = p(cR)$, where $p(d) = \displaystyle \int_0^w \dfrac{2}{\pi} \dfrac{d}{d^2 + t^2} \left(1 - \dfrac{t}{w}\right) dt$.
+
+<span style="color: #6FA8FF">**Proof Sketch:**</span> Similar to the $\ell_2$ case, the projection $a \cdot (x - y)$ follows a Cauchy distribution when $a$ is drawn from a Cauchy distribution. The probability of collision depends on the distance $\|x - y\|_1$ and leads to the integral expression for $p(d)$.
 
 ### <span style="color: #6ED3C5">Metric Learning</span>
 
