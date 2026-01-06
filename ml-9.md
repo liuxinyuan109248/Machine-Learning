@@ -64,9 +64,10 @@ By Markov's inequality, the probability that more than $2L$ points in $T$ are fo
 
 ### <span style="color: #6ED3C5">Metric Learning</span>
 
-<span style="color: #6FA8FF">**Neighborhood Components Analysis (NCA):**</span> Learn a linear transformation $A$ to minimize the leave-one-out classification error of 1-NN on the training set. The probability that point $x_i$ selects point $x_j$ as its neighbor is given by
-$$p_{ij} = \dfrac{\exp(-\|f(x_i) - f(x_j)\|^2)}{\sum_{k \neq i} \exp(-\|f(x_i) - f(x_k)\|^2)},$$
-where $f(x) = A x$. The objective is to maximize the expected number of correctly classified points $\sum_i \sum_{j \in C_i} p_{ij}$, where $C_i$ is the set of points with the same label as $x_i$.
+<span style="color: #6FA8FF">**Neighborhood Components Analysis (NCA):**</span> Learn a linear transformation $A$ to minimize the leave-one-out classification error of 1-NN on the training set. The probability that point $x_i$ selects point $x_j$ as its neighbor is given by $p_{ij} = \dfrac{\exp(-\|Ax_i - Ax_j\|^2)}{\sum_{k \neq i} \exp(-\|Ax_i - Ax_k\|^2)}$. The objective is to maximize the expected number of correctly classified points $\sum_i \sum_{j \in C_i} p_{ij}$, where $C_i$ is the set of points with the same label as $x_i$. Once $A$ is learned, the classification of a new point $x$ is done by finding its nearest neighbor in the transformed space.
+
+<span style="color: #6FA8FF">**Distribution Alignment:**</span> Minimize the discrepancy between the source and target distributions after transformation using Kullback-Leibler divergence as the loss function:
+$$p_{ij}^X = \dfrac{\exp(-\|Ax_i - Ax_j\|^2)}{\sum_{k \neq i} \exp(-\|Ax_i - Ax_k\|^2)}, \quad p_{ij}^Y = \dfrac{\exp(-\|Ay_i - Ay_j\|^2)}{\sum_{k \neq i} \exp(-\|Ay_i - Ay_k\|^2)}, \quad L = \sum_{i,j} p_{ij}^X \log \dfrac{p_{ij}^X}{p_{ij}^Y}.$$
 
 ### <span style="color: #6ED3C5">Large Margin Nearest Neighbor (LMNN)</span>
 

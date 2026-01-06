@@ -42,7 +42,7 @@ Combining the above two inequalities, we have $t^2\gamma^2\le\|w_{t+1}\|_2^2\le 
 
 <span style="color: #6FA8FF">**Cross Entropy**:</span> $XE(p,q)=-\sum_{c}p(c)\log q(c)\ge-\sum_{c}p(c)\log p(c)=H(p)$
 
-### <span style="color: #6ED3C5">Rigid Regression</span>
+### <span style="color: #6ED3C5">Ridge Regression</span>
 
 $L=\dfrac{1}{2N}\sum_{i=1}^N(w^Tx_i-y_i)^2+\dfrac{\lambda}{2}\|w\|_2^2\implies\nabla_wL=\dfrac{1}{N}\sum_{i=1}^N(w^Tx_i-y_i)x_i+\lambda w$
 
