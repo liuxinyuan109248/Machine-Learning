@@ -9,17 +9,24 @@ $$(1 - \epsilon) \|u - v\|^2 \leq \|f(u) - f(v)\|^2 \leq (1 + \epsilon) \|u - v\
 
 ### <span style="color: #6ED3C5">Principal Component Analysis (PCA)</span>
 
-- maximize variance $\sum_{i=1}^n (x_i \cdot v)^2 = v^T X X^T v$ subject to $\|v\| = 1$, where $X \in \mathbb{R}^{d \times n}$ is the data matrix with each $x_i$ as a column
-- minimize reconstruction error $\sum_{i=1}^n \|x_i - (x_i \cdot v)v\|^2 = \sum_{i=1}^n \|x_i\|^2 - \sum_{i=1}^n (x_i \cdot v)^2$
-- solution: $v$ is the eigenvector of $X X^T$ corresponding to the largest eigenvalue
-- for $k$-dimensional subspace, take top $k$ eigenvectors
+<span style="color: #6FA8FF">**PCA**</span> is a dimensionality reduction technique that identifies the directions (principal components) along which the variation in the data is maximal. PCA can be viewed through two equivalent mathematical lenses:
+
+* **Maximize Variance**: Find a unit vector $v$ that maximizes the "spread" of the data when projected:
+    $$\max_{\|v\|=1} \sum_{i=1}^n (x_i \cdot v)^2 = v^T X X^T v$$
+* **Minimize Reconstruction Error**: Find a subspace that minimizes the distance between original points and their projections:
+    $$\min \sum_{i=1}^n \|x_i - (x_i \cdot v)v\|^2 = \sum_{i=1}^n \|x_i\|^2 - \sum_{i=1}^n (x_i \cdot v)^2$$
+
+The optimal vector $v$ is the **eigenvector** of the matrix $XX^T$ corresponding to its **largest eigenvalue**. For a $k$-dimensional representation, we select the eigenvectors associated with the **top $k$ eigenvalues**.
 
 ### <span style="color: #6ED3C5">Power Method</span>
 
-- to find the largest eigenvalue and corresponding eigenvector of a matrix $A$
-- start with a random vector $b_0$ and iterate $b_{k+1} = \dfrac{A b_k}{\|A b_k\|}$
-- converges to the eigenvector corresponding to the largest eigenvalue
-- compute eigenvalues and eigenvectors iteratively by deflation: after finding the largest eigenvalue $\lambda_1 = b_k^T A b_k$ and eigenvector $v_1 = b_k$, update $A \leftarrow A - \lambda_1 v_1 v_1^T$ and repeat
+The Power Method is an iterative numerical algorithm used to calculate the dominant eigenvalue and its corresponding eigenvector of a matrix $A$. Starting with a random initial vector $b_0$, the vector is repeatedly multiplied by $A$ and normalized to prevent numerical overflow: $b_{k+1} = \dfrac{A b_k}{\|A b_k\|}$. This sequence converges to the eigenvector associated with the largest eigenvalue.
+
+To find subsequent principal components, we use **deflation** to "remove" the influence of the eigenvectors already found:
+
+1. **Extract Eigenvalue**: Calculate $\lambda_1 = b_k^T A b_k$ once the vector has converged.
+2. **Update Matrix**: Subtract the rank-1 matrix formed by the found eigenvector: $A \leftarrow A - \lambda_1 v_1 v_1^T$.
+3. **Repeat**: Apply the Power Method to the updated matrix to find the next dominant eigenvalue/vector pair.
 
 ### <span style="color: #6ED3C5">Locality Sensitive Hashing (LSH)</span>
 
@@ -83,5 +90,22 @@ $$p_{ij}^X = \dfrac{\exp(-\|Ax_i - Ax_j\|^2)}{\sum_{k \neq i} \exp(-\|Ax_i - Ax_
 
 ### <span style="color: #6ED3C5">Large Margin Nearest Neighbor (LMNN)</span>
 
-- $L = \max(0, \|f(x) - f(x^+)\|_2 - \|f(x) - f(x^-)\|_2 + r)$, where $r > 0$ is the margin, $x^+$ is a target neighbor (same class), and $x^-$ is an impostor (different class)
-- pick the hard cases: $x^+ = \arg\max_{y \in C_x} \|f(x) - f(y)\|_2$ and $x^- = \arg\min_{y \notin C_x} \|f(x) - f(y)\|_2$
+<span style="color: #6FA8FF">**LMNN**</span> is a distance metric learning algorithm designed to improve the performance of <span style="color: #6FA8FF">**$k$-Nearest Neighbor ($k$-NN)**</span> classification. It learns a transformation $f(x)$ such that similar points are pulled together and dissimilar points are pushed apart.
+
+The goal is to maintain a margin $r$ between "target neighbors" (same class) and "impostors" (different class):
+
+$$L = \max(0, \|f(x) - f(x^+)\|_2 - \|f(x) - f(x^-)\|_2 + r)$$
+
+* <span style="color: #6FA8FF">**$x$ (Anchor):**</span> The current data point.
+* <span style="color: #6FA8FF">**$x^+$ (Target Neighbor):**</span> A point belonging to the **same class** ($C_x$) that we want to keep close.
+* <span style="color: #6FA8FF">**$x^-$ (Impostor):**</span> A point belonging to a **different class** that we want to push outside the margin.
+* <span style="color: #6FA8FF">**$r$ (Margin):**</span> A positive constant $(r > 0)$ defining the required safety gap.
+
+To make the learning process more robust and efficient, the algorithm focuses on the most challenging examples:
+
+* <span style="color: #6FA8FF">**Hardest Target Neighbor ($x^+$):**</span> The point in the same class that is currently **farthest** from the anchor.
+    $$x^+ = \arg\max_{y \in C_x} \|f(x) - f(y)\|_2$$
+* <span style="color: #6FA8FF">**Hardest Impostor ($x^-$):**</span> The point in a different class that is currently **closest** to the anchor.
+    $$x^- = \arg\min_{y \notin C_x} \|f(x) - f(y)\|_2$$
+
+**Key Objective:** The model effectively learns a metric where for every point, its $k$-nearest neighbors belong to the same class, while points from other classes are separated by a wide margin.

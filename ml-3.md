@@ -38,15 +38,26 @@ By convexity of $f$, $\mathbb{E}[f(\overline{x_t})]\le\dfrac{1}{t}\sum_{i=0}^{t-
 
 ### <span style="color: #6ED3C5">Stochastic Variance Reduced Gradient (SVRG)</span>
 
-- for $s=1,2,\ldots,S$
-  - set $\tilde{x}=\tilde{x}_{s-1}$
-  - compute full gradient $\tilde{\mu}=\nabla f(\tilde{x})=\dfrac{1}{n}\sum_{i=1}^n\nabla f_i(\tilde{x})$
-  - set $x_0=\tilde{x}$
-  - for $t=1,2,\ldots,m$
-    - randomly pick $i_t\in\{1,2,\ldots,n\}$
-    - compute $g_t=\nabla f_{i_t}(x_{t-1})-\nabla f_{i_t}(\tilde{x})+\tilde{\mu}$
-    - update $x_t=x_{t-1}-\eta g_t$
-  - randomly pick $\tilde{x}_s$ from $\{x_0,x_1,\ldots,x_{m-1}\}$
+**Algorithm Procedure:**
+
+**Initialize:** Set the starting point $\tilde{x}_0$.
+
+For each epoch $s = 1, 2, \ldots, S$:
+
+1.  **Full Gradient Computation (Anchor Step):**
+    * Set the anchor point $\tilde{x} = \tilde{x}_{s-1}$.
+    * Compute the full gradient at the anchor point: $\tilde{\mu} = \nabla f(\tilde{x}) = \dfrac{1}{n} \sum_{i=1}^n \nabla f_i(\tilde{x})$.
+    * Initialize the inner loop starting point: $x_0 = \tilde{x}$.
+
+2.  **Inner Loop (Stochastic Updates):**
+    For $t = 1, 2, \ldots, m$:
+    * Randomly pick an index $i_t \in \{1, 2, \ldots, n\}$.
+    * Compute the **variance-reduced gradient** estimate $g_t$: $g_t = \nabla f_{i_t}(x_{t-1}) - \nabla f_{i_t}(\tilde{x}) + \tilde{\mu}$.
+    * Update the local iterate: $x_t = x_{t-1} - \eta g_t$.
+
+3.  **Snapshot Update:**
+    * Option 1: Set $\tilde{x}_s = x_m$.
+    * Option 2 (Theoretical): Randomly pick $\tilde{x}_s$ from the set $\{x_0, x_1, \ldots, x_{m-1}\}$.
 
 <span style="color: #6FA8FF">**Theorem:**</span> If each $f_i$ is $\mu$-strongly convex and $L$-smooth, then SVRG achieves linear convergence rate $\dfrac{2L\eta}{1-2L\eta}+\dfrac{1}{m\mu\eta(1-2L\eta)}$, and is faster than GD if the condition number $\kappa=\dfrac{L}{\mu}$ is large.
 
@@ -116,7 +127,7 @@ and therefore $\mathbb{E}[f(\tilde{x}_s)-f(x^*)]\le\left(\dfrac{2L\eta}{1-2L\eta
 - If $w(x)=\dfrac{1}{2}\|x\|^2$, then $V_x(y)=\dfrac{1}{2}\|y-x\|^2$ (Euclidean distance)
 - If $w(x) = \sum_i x_i \log x_i$, then $V_x(y)=\sum_i y_i \log \dfrac{y_i}{x_i}$ (KL divergence)
   
-<span style="color: #6FA8FF">**Mirror Descent:**</span> $x_{k+1}=\text{Mirr}(\alpha\cdot\nabla f(x_k)),\text{Mirr}(g)=\arg\min_y(V_x(y)+\langle g,y-x\rangle)$
+<span style="color: #6FA8FF">**Mirror Descent:**</span> The standard update for step $k+1$ is defined using the "mirror" map: $x_{k+1} = \text{Mirr}_x(\alpha \cdot \nabla f(x_k))$, where the operator $\text{Mirr}_x(g)$ is defined as the solution to a linearized optimization problem regularized by a **Bregman Divergence** $V_x(y)$: $\text{Mirr}_x(g) = \arg\min_{y \in \mathcal{X}} \left\{ \langle g, y - x \rangle + V_x(y) \right\}$.
 
 <span style="color: #6FA8FF">**Theorem:**</span> If $f$ is convex and $\rho$-Lipschitz continuous, and $w$ is 1-strongly convex, then mirror descent achieves an $\epsilon$-optimal solution in $O(\rho^2/\epsilon^2)$ iterations.
 
