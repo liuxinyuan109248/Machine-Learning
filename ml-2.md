@@ -4,13 +4,7 @@
 
 ### <span style="color: #6ED3C5">Unsupervised Learning</span>
 
-- Clustering
-- Principal Component Analysis (PCA)
-  - find the directions of maximum variance in high-dimensional data
-  - the best-fit line minimizes the sum of squared distances from the points to the line
-- Generative Models
-- Anomaly Detection
-- Dimensionality Reduction
+Unsupervised learning encompasses several key techniques designed to uncover hidden structures within unlabeled data. <span style="color: #6FA8FF">**Clustering**</span> is used to group similar data points together based on inherent patterns, while <span style="color: #6FA8FF">**generative models**</span> aim to learn the underlying distribution of the data to create new samples. <span style="color: #6FA8FF">**Anomaly detection**</span> identifies rare observations that deviate significantly from the majority of the data. A major subset of this field is <span style="color: #6FA8FF">**dimensionality reduction**</span>, which simplifies complex datasets while preserving essential information. A primary method for this is <span style="color: #6FA8FF">**Principal Component Analysis (PCA)**</span>, which finds the directions of maximum variance in high-dimensional data. In PCA, the best-fit line is determined by minimizing the sum of squared distances from the points to the line, effectively capturing the most significant features of the dataset.
 
 ### <span style="color: #6ED3C5">Smooth and Convex Optimization</span>
 
@@ -177,16 +171,8 @@ $$\implies\frac{L}{2}\|x_t-x_{t+1}\|^2\le L\langle x_t-x_{t+1},x_t-x^*\rangle-\f
 
 </details>
 
-<span style="color: #6FA8FF">**Limitations of Gradient Descent:</span>**
-
-- computing full gradient is expensive for large datasets
-- could get stuck in saddle points
+<span style="color: #6FA8FF">**Limitations of Gradient Descent:**</span> Computing the full gradient is computationally expensive for large datasets, and the optimization process can frequently get stuck in saddle points.
 
 ### <span style="color: #6ED3C5">Stochastic Gradient Descent (SGD)</span>
 
-- randomly sample a mini-batch of data to compute an unbiased estimate of the gradient
-- update parameters using the estimated gradient
-- $x_{t+1}=x_t-\eta g_t$, where $g_t$ is the estimated gradient at iteration $t$, $\mathbb{E}[g_t]=\nabla f(x_t)$
-- the mini-batch size $|S|$ is usually 64, 128, 256, etc.
-- help escape saddle points due to noise in the gradient estimate
-- help get the right mini-batch statistics for batch normalization
+To address these limitations, <span style="color: #6FA8FF">**Stochastic Gradient Descent**</span> randomly samples a mini-batch of data to compute an unbiased estimate of the gradient. The parameters are then updated using this estimated gradient according to the rule $x_{t+1}=x_t-\eta g_t$, where $g_t$ is the estimated gradient at iteration $t$ satisfying $\mathbb{E}[g_t]=\nabla f(x_t)$. Typically, the mini-batch size $|S|$ is chosen as a power of two, such as 64, 128, or 256. The inherent noise in the gradient estimate helps the model escape saddle points and provides the necessary mini-batch statistics for the effective operation of batch normalization.

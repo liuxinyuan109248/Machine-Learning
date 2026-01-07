@@ -4,18 +4,55 @@
 
 ### <span style="color: #6ED3C5">Decision Trees</span>
 
-- Gini Impurity: $\text{Gini} = 1 - \sum_{i=1}^{C} p_i^2$ where $p_i$ is the probability of class $i$ in a node
-- pick the split that minimizes weighted Gini of child nodes
+<span style="color: #6FA8FF">**Decision Trees**</span> are non-parametric supervised learning models that partition the feature space into a set of rectangular regions. The goal is to create a model that predicts the value of a target variable by learning simple decision rules inferred from the data features.
 
-### <span style="color: #6ED3C5">Random Forests</span>
+For a classification task with $C$ classes, the <span style="color: #6FA8FF">**Gini Impurity**</span> measures the frequency with which a randomly chosen element from a node would be incorrectly labeled if it was randomly labeled according to the distribution of labels in the subset. At a specific node, it is defined as: $\text{Gini} = 1 - \sum_{i=1}^{C} p_i^2$, where $p_i$ is the probability (proportion) of class $i$ in that node.
 
-- for each tree:
-  - randomly select subset of features
-  - sample with replacement from training data and train tree $T_b$ on this sample $(x_b, y_b)$
-  - each element will be left out with probability $\left(1 - \dfrac{1}{N}\right)^N \approx e^{-1} \approx 0.37$
-- $\hat{f}_{rf}(x) = \dfrac{1}{B} \sum_{b=1}^{B} T_b(x)$, where $B$ is the number of trees
+* A Gini Impurity of **0** indicates a "pure" node (all elements belong to one class).
+* A higher Gini value indicates a more diverse (impure) distribution of classes.
 
-Random forests reduce variance by averaging multiple deep trees trained on different parts of the same training set
+Decision trees are built using a **greedy, top-down approach**. At each node, the algorithm performs a split based on a single feature $k$ and a threshold $t$. For every internal node, the algorithm searches through all features $k \in \{1, \dots, p\}$ and all possible threshold values $t$ within each feature. It partitions the data $D$ into two disjoint subsets: $D_{left}(k, t) = \{x \mid x_k \leq t\}$ and $D_{right}(k, t) = \{x \mid x_k > t\}$.
+
+To choose the "best" feature-threshold pair $(k, t)$, the algorithm minimizes a cost function $J(k, t)$, which represents the <span style="color: #6FA8FF">**Weighted Average Gini Impurity**</span> of the resulting child nodes: $J(k, t) = \dfrac{n_{left}}{n} \text{Gini}(D_{left}) + \dfrac{n_{right}}{n} \text{Gini}(D_{right})$, where $n_{left}$ and $n_{right}$ are the number of samples in the left and right children, respectively, and $n$ is the total number of samples in the parent node. The weights $\dfrac{n_{left}}{n}$ and $\dfrac{n_{right}}{n}$ ensure that larger child nodes have a greater influence on the decision than smaller ones.
+
+Deep trees can capture noise in the training data, leading to high variance. This is typically mitigated by **pruning** or by using ensemble methods like <span style="color: #6FA8FF">**Random Forests**</span>.
+
+### <span style="color: #6ED3C5">Random Forest Algorithm</span>
+
+<span style="color: #6FA8FF">**Random Forest**</span> is an ensemble learning method that constructs a multitude of decision trees at training time and outputs the average prediction of the individual trees for regression tasks. It is designed to improve upon the high variance of individual decision trees through **Bagging** and **Feature Randomness**.
+
+For an ensemble of $B$ trees, the training process for each tree $T_b$ follows these steps:
+
+<span style="color: #6FA8FF">**A. Bootstrap Aggregation (Bagging):**</span> For each tree $b = 1, \dots, B$:
+
+- Sample $N$ examples from the training data **with replacement**.
+- This creates a bootstrap sample $(x_b, y_b)$ of the same size as the original dataset.
+
+> **The 0.37 Rule (Out-of-Bag Observations):**
+> For a dataset of size $N$, the probability that a specific data point is **not** selected in a single draw is $(1 - 1/N)$. Since we draw $N$ times, the probability that a point is left out of the bootstrap sample is:
+> $\left(1 - \dfrac{1}{N}\right)^N \approx e^{-1} \approx 0.368$.
+> Consequently, approximately **37%** of the data is "Out-of-Bag" (OOB) for any given tree, providing a built-in validation set for estimating generalization error.
+
+<span style="color: #6FA8FF">**B. Feature Randomization:**</span> While growing the tree $T_b$, at each node split:
+
+- Instead of considering all available features, **randomly select a subset of features**.
+- Pick the best split among only that subset.
+- This technique is the primary mechanism for **de-correlation**, ensuring that trees do not all rely on the same dominant features.
+
+The final Random Forest estimator $\hat{f}_{\text{rf}}(x)$ is the average of all individual tree predictions: $\hat{f}_{\text{rf}}(x) = \dfrac{1}{B} \sum_{b=1}^{B} T_b(x)$.
+
+Based on the statistical properties of the ensemble, the variance of the Random Forest is given by: $\text{Var}(\hat{f}_{\text{rf}}(x)) = \rho\sigma^2 + \dfrac{1-\rho}{B}\sigma^2$, where $\rho$ is the average correlation between individual trees and $\sigma^2$ is the variance of a single tree's prediction.
+
+<span style="color: #6FA8FF">**Why Random Forests Outperform Simple Bagging**:</span>
+
+In standard Bagging (using all features), $\rho$ remains high because different trees often choose the same strong predictors for the top-level splits. By using a **random subset of features**, Random Forests force the trees to be diverse, which **lowers $\rho$**.
+
+As shown in the formula, as $B \to \infty$, the variance approaches the limit $\rho\sigma^2$. By aggressively reducing $\rho$ through feature randomness, Random Forests push this variance floor lower than simple bagging ever could.
+
+| Parameter | Role | Effect on Model |
+| :--- | :--- | :--- |
+| **$B$ (n_estimators)** | Number of trees | Increasing $B$ reduces variance without increasing bias. |
+| **$\rho$ (Tree Correlation)** | Correlation between trees | Lowering $\rho$ via feature randomness significantly reduces ensemble variance. |
 
 ### <span style="color: #6ED3C5">AdaBoost</span>
 

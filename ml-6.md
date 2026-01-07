@@ -44,13 +44,13 @@ Combining the above two inequalities, we have $t^2\gamma^2\le\|w_{t+1}\|_2^2\le 
 
 ### <span style="color: #6ED3C5">Ridge Regression</span>
 
-$L=\dfrac{1}{2N}\sum_{i=1}^N(w^Tx_i-y_i)^2+\dfrac{\lambda}{2}\|w\|_2^2\implies\nabla_wL=\dfrac{1}{N}\sum_{i=1}^N(w^Tx_i-y_i)x_i+\lambda w$
+$$L=\dfrac{1}{2N}\sum_{i=1}^N(w^Tx_i-y_i)^2+\dfrac{\lambda}{2}\|w\|_2^2\implies\nabla_wL=\dfrac{1}{N}\sum_{i=1}^N(w^Tx_i-y_i)x_i+\lambda w$$
 
 For each gradient step: $\widehat{w_{t+1}}=w_t-\dfrac{\eta}{N}\sum_{i=1}^N(w_t^Tx_i-y_i)x_i,\quad w_{t+1}=(1-\eta\lambda)\widehat{w_{t+1}}$ until $w_{t+1}=w_t$
 
 ### <span style="color: #6ED3C5">LASSO Regression</span>
 
-$L=\dfrac{1}{2N}\sum_{i=1}^N(w^Tx_i-y_i)^2+\lambda\|w\|_1\implies\nabla_wL=\dfrac{1}{N}\sum_{i=1}^N(w^Tx_i-y_i)x_i+\lambda\cdot\text{sign}(w)$
+$$L=\dfrac{1}{2N}\sum_{i=1}^N(w^Tx_i-y_i)^2+\lambda\|w\|_1\implies\nabla_wL=\dfrac{1}{N}\sum_{i=1}^N(w^Tx_i-y_i)x_i+\lambda\cdot\text{sign}(w)$$
 
 For each gradient step:
 $\widehat{w_{t+1}}=w_t-\dfrac{\eta}{N}\sum_{i=1}^N(w_t^Tx_i-y_i)x_i,\quad (w_{t+1})_i=\begin{cases}(\widehat{w_{t+1}})_i-\eta\lambda&\text{if }(\widehat{w_{t+1}})_i>\eta\lambda\\0&\text{if }|(\widehat{w_{t+1}})_i|\le\eta\lambda\\(\widehat{w_{t+1}})_i+\eta\lambda&\text{if }(\widehat{w_{t+1}})_i<-\eta\lambda\end{cases}$
