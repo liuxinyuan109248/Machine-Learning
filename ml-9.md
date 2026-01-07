@@ -30,11 +30,13 @@ To find subsequent principal components, we use **deflation** to "remove" the in
 
 ### <span style="color: #6ED3C5">Locality Sensitive Hashing (LSH)</span>
 
-<span style="color: #6FA8FF">**Nearest neighbor problem:**</span> find $x^* = \arg\min_{x \in X} \|x - q\|$ for a query point $q$
+<span style="color: #6FA8FF">**Locality Sensitive Hashing (LSH)**</span> is a powerful algorithmic framework designed for **efficient similarity search** in high-dimensional spaces. The core idea is to use a family of hash functions that **maximize collisions for nearby points** while minimizing them for distant ones. To understand LSH, we define the search task with increasing levels of relaxation:
 
-<span style="color: #6FA8FF">**$R$-near neighbor problem:**</span> find any $x \in X$ such that $\|x - q\| \leq R$
+* <span style="color: #6FA8FF">**Nearest Neighbor (NN) Problem:**</span> Given a dataset $X$ and a query $q$, find the point $x^* \in X$ that minimizes the distance to the query: $x^* = \arg\min_{x \in X} \|x - q\|$.
 
-<span style="color: #6FA8FF">**Randomized $c$-approximate $R$-near neighbor problem:**</span> if there exists $x \in X$ such that $\|x - q\| \leq R$, return some $x' \in X$ such that $\|x' - q\| \leq cR$ with probability at least $1 - \delta$
+* <span style="color: #6FA8FF">**$R$-Near Neighbor ($R$-NN) Problem:**</span> A decision-based variant where the goal is to find any point $x \in X$ falling within a fixed radius $R$ of the query: if there exists $x \in X$ such that $\|x - q\| \leq R$, return such an $x$.
+
+* <span style="color: #6FA8FF">**Randomized $(c, R)$-Approximate Near Neighbor:**</span> The most practical formulation for high-dimensional data. If there exists a point within distance $R$, we must return a point $x'$ within an expanded distance $cR$ (where $c > 1$) with probability at least $1 - \delta$: if there exists $x \in X$ such that $\|x - q\| \leq R$, return some $x' \in X$ such that $\|x' - q\| \leq cR$ with probability at least $1 - \delta$.
 
 <span style="color: #6FA8FF">**Locality Sensitive Hashing (LSH):**</span> A family $\mathcal{H}$ of hash functions is called $(R, cR, P_1, P_2)$-sensitive if for any $x, y \in \mathbb{R}^d$,
 
