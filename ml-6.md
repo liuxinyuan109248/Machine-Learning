@@ -54,6 +54,14 @@ $$L=\dfrac{1}{2N}\sum_{i=1}^N(w^Tx_i-y_i)^2+\lambda\|w\|_1\implies\nabla_wL=\dfr
 For each gradient step:
 $\widehat{w_{t+1}}=w_t-\dfrac{\eta}{N}\sum_{i=1}^N(w_t^Tx_i-y_i)x_i,\quad (w_{t+1})_i=\begin{cases}(\widehat{w_{t+1}})_i-\eta\lambda&\text{if }(\widehat{w_{t+1}})_i>\eta\lambda\\0&\text{if }|(\widehat{w_{t+1}})_i|\le\eta\lambda\\(\widehat{w_{t+1}})_i+\eta\lambda&\text{if }(\widehat{w_{t+1}})_i<-\eta\lambda\end{cases}$
 
+### <span style="color: #6ED3C5">Compressed Sensing</span>
+
+<span style="color: #6FA8FF">**Compressed Sensing (CS)**</span> is a technique to recover a high-dimensional sparse signal from a small number of linear measurements. It defies the traditional Nyquist-Shannon sampling theorem by leveraging signal sparsity.
+
+* **Sparsity:** A signal $x \in \mathbb{R}^d$ is $s$-sparse if it has at most $s$ non-zero entries ($s \ll d$).
+* **Measurement:** We observe $y = Wx$, where $W \in \mathbb{R}^{n \times d}$ and $n < d$.
+* **The Problem:** Since $n < d$, the system is underdetermined. CS proves that we can recover $x$ exactly by solving an $L_1$ minimization problem (LASSO) if $W$ satisfies certain properties.
+
 ### <span style="color: #6ED3C5">Restricted Isometry Property (RIP) Condition</span>
 
 $W\in\mathbb{R}^{n\times d}$ is <span style="color: #6FA8FF">**$(\epsilon,s)$-RIP**</span> if for every $x\in\mathbb{R}^d$ with $\|x\|_0\le s$, it holds that $(1-\epsilon)\|x\|_2^2\le\|Wx\|_2^2\le(1+\epsilon)\|x\|_2^2$.

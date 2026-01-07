@@ -172,3 +172,56 @@ Assume by contradiction that $\mathcal{H}$ is PAC learnable. Choose some $\epsil
    $$C_1\dfrac{d+\log(1/\delta)}{\epsilon^2}\le m_{\mathcal{H}}(\epsilon,\delta)\le C_2\dfrac{d+\log(1/\delta)}{\epsilon^2}.$$
 2. $\mathcal{H}$ is PAC learnable with sample complexity
    $$C_1\dfrac{d+\log(1/\delta)}{\epsilon}\le m_{\mathcal{H}}(\epsilon,\delta)\le C_2\dfrac{d\log(1/\epsilon)+\log(1/\delta)}{\epsilon}.$$
+
+### <span style="color: #6ED3C5">Summary of PAC Learnability and VC Dimension</span>
+
+| Hypothesis Class $\mathcal{H}$ | PAC Learnable? | VC Dimension | Sample Complexity ($m_{\mathcal{H}}$) |
+| :--- | :---: | :---: | :--- |
+| **Finite Hypothesis Class** | **Yes** | $\le \log_2(\vert\mathcal{H}\vert)$ | $\le \left\lceil \dfrac{\log(\vert\mathcal{H}\vert/\delta)}{\epsilon} \right\rceil$ |
+| **All Functions** (Infinite Domain) | **No** | $\infty$ | $N/A$ (No Free Lunch applies) |
+| **Threshold Functions** on $\mathbb{R}$ | **Yes** | $1$ | $\le \left\lceil \dfrac{\log(2/\delta)}{\epsilon} \right\rceil$ |
+| **Any Class with Finite VCdim** | **Yes** | $d < \infty$ | $\tilde{O}\left(\dfrac{d + \log(1/\delta)}{\epsilon}\right)$ |
+| **Any Class with Infinite VCdim** | **No** | $\infty$ | $N/A$ |
+
+### Comparison of Learnability Frameworks
+
+| Framework | Goal Requirement | Sample Complexity Dependency |
+| :--- | :--- | :--- |
+| **Standard PAC** | $L_{\mathcal{D}}(h) \le \epsilon$ | $O\left(\dfrac{1}{\epsilon}\right)$ |
+| **Agnostic PAC** | $L_{\mathcal{D}}(h) \le \min L_{\mathcal{D}}(h') + \epsilon$ | $O\left(\dfrac{1}{\epsilon^2}\right)$ |
+
+### <span style="color: #6ED3C5">Problem: VC Dimension of the Union of Hypothesis Classes</span>
+
+Let $\mathcal{H}_1$ and $\mathcal{H}_2$ be two hypothesis classes over a domain $\mathcal{X}$. Let $d = \max\{\text{VCDim}(\mathcal{H}_1), \text{VCDim}(\mathcal{H}_2)\}$. 
+We aim to prove that $\text{VCDim}(\mathcal{H}_1 \cup \mathcal{H}_2) \le 2d + 1$ and evaluate the tightness of this bound.
+
+<span style="color: #6FA8FF">**Sauer's Lemma:**</span> If $\text{VCDim}(\mathcal{H}) = d$, then for any subset $C$ of size $m$, $\displaystyle \vert\mathcal{H}_C\vert \le \Phi_d(m) = \sum_{i=0}^d \binom{m}{i}$.
+
+<details>
+  <summary><b><font color="#6FA8FF">Proof:</font></b> (Click to expand)</summary>
+
+We proceed by induction on both $m$ (the number of samples) and $d$ (the VC dimension).
+
+* **If $d = 0$:** The class can only represent one pattern (otherwise a single point would be shattered). $\displaystyle \sum_{i=0}^0 \binom{m}{i} = \binom{m}{0} = 1$.
+* **If $m = 0$:** The only subset is the empty set, which has $1$ pattern. $\displaystyle \sum_{i=0}^d \binom{0}{i} = \binom{0}{0} = 1$.
+
+Assume the lemma holds for $(m-1, d)$ and $(m-1, d-1)$. Let $C = \{x_1, \dots, x_m\}$. Define the restriction $\mathcal{H}_C$. Now, consider the set of patterns without the last element $x_m$: $\mathcal{H}' = \{ (h(x_1), \dots, h(x_{m-1})) : h \in \mathcal{H}_C \}$. Next, define a special set $\mathcal{H}''$ consisting of those patterns in $\mathcal{H}'$ that could have been completed by **both** $0$ and $1$ in $\mathcal{H}_C$: $\mathcal{H}'' = \{ v \in \{0,1\}^{m-1} : (v, 0) \in \mathcal{H}_C \text{ and } (v, 1) \in \mathcal{H}_C \}$. By construction, we have the identity: $\vert\mathcal{H}_C\vert = \vert\mathcal{H}'\vert + \vert\mathcal{H}''\vert$.
+
+1. **For $\mathcal{H}'$:** This is a hypothesis class over $m-1$ points. Its VC dimension is at most $d \implies \vert\mathcal{H}'\vert \le \Phi_d(m-1)$.
+2. **For $\mathcal{H}''$:** If a set $S \subseteq \{x_1, \dots, x_{m-1}\}$ is shattered by $\mathcal{H}''$, then $S \cup \{x_m\}$ must be shattered by $\mathcal{H}_C$ (because for every pattern on $S$, $\mathcal{H}''$ provides both $0$ and $1$ for $x_m$). Therefore, the VC dimension of $\mathcal{H}''$ must be at most $d-1 \implies \vert\mathcal{H}''\vert \le \Phi_{d-1}(m-1)$.
+
+Using the Pascal triangle identity $\displaystyle \binom{n}{k} = \binom{n-1}{k} + \binom{n-1}{k-1}$:
+$$\vert\mathcal{H}_C\vert \le \sum_{i=0}^d \binom{m-1}{i} + \sum_{i=0}^{d-1} \binom{m-1}{i} = \binom{m-1}{0} + \sum_{i=1}^d \left( \binom{m-1}{i} + \binom{m-1}{i-1} \right) = \vert\mathcal{H}_C\vert \le \binom{m}{0} + \sum_{i=1}^d \binom{m}{i} = \sum_{i=0}^d \binom{m}{i}$$
+
+This completes the proof.
+
+</details>
+
+Let $k = \text{VCDim}(\mathcal{H}_1 \cup \mathcal{H}_2)$. By definition, there exists a set $C$ of size $k$ shattered by $\mathcal{H}_1 \cup \mathcal{H}_2$. This means $\vert(\mathcal{H}_1 \cup \mathcal{H}_2)_C\vert = 2^k$. Note that the restriction of a union is the union of the restrictions: $\vert(\mathcal{H}_1 \cup \mathcal{H}_2)_C\vert = \vert(\mathcal{H}_1)_C \cup (\mathcal{H}_2)_C\vert \le \vert(\mathcal{H}_1)_C\vert + \vert(\mathcal{H}_2)_C\vert$. Since $\text{VCDim}(\mathcal{H}_1) \le d$ and $\text{VCDim}(\mathcal{H}_2) \le d$, applying Sauer's Lemma to both gives: $\displaystyle 2^k \le \sum_{i=0}^d \binom{k}{i} + \sum_{i=0}^d \binom{k}{i} = 2 \sum_{i=0}^d \binom{k}{i}$. Therefore, $\text{VCDim}(\mathcal{H}_1 \cup \mathcal{H}_2) = k \le 2d + 1$.
+
+**The bound is tight.** There exist cases where $\text{VCDim}(\mathcal{H}_1 \cup \mathcal{H}_2) = 2d + 1$. Consider the domain $\mathcal{X} = \{1, 2, \dots, 2d+1\}$. Define two hypothesis classes as follows:
+
+* **$\mathcal{H}_1$**: Contains all functions that assign the label $1$ to **at most $d$** elements. $\text{VCDim}(\mathcal{H}_1) = d$ because any set of $d+1$ points cannot be shattered (the all-ones vector is missing).
+* **$\mathcal{H}_2$**: Contains all functions that assign the label $1$ to **at least $d+1$** elements. By symmetry (treating $0$ as $1$), $\text{VCDim}(\mathcal{H}_2) = d$.
+
+The union $\mathcal{H}_1 \cup \mathcal{H}_2$ contains: all functions with $\le d$ ones and all functions with $\ge d+1$ ones. Together, $\mathcal{H}_1 \cup \mathcal{H}_2$ contains **all possible binary functions** from $\{1, \dots, 2d+1\}$ to $\{0, 1\}$. The total number of functions is $2^{2d+1}$. Since all functions exist, the set of size $2d+1$ is shattered. Thus, $\text{VCDim}(\mathcal{H}_1 \cup \mathcal{H}_2) = 2d + 1$.
