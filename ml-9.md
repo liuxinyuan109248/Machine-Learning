@@ -38,7 +38,7 @@ To find subsequent principal components, we use **deflation** to "remove" the in
 
 * <span style="color: #6FA8FF">**Randomized $(c, R)$-Approximate Near Neighbor:**</span> The most practical formulation for high-dimensional data. If there exists a point within distance $R$, we must return a point $x'$ within an expanded distance $cR$ (where $c > 1$) with probability at least $1 - \delta$: if there exists $x \in X$ such that $\|x - q\| \leq R$, return some $x' \in X$ such that $\|x' - q\| \leq cR$ with probability at least $1 - \delta$.
 
-<span style="color: #6FA8FF">**Locality Sensitive Hashing (LSH):**</span> A family $\mathcal{H}$ of hash functions is called $(R, cR, P_1, P_2)$-sensitive if for any $x, y \in \mathbb{R}^d$,
+<span style="color: #6FA8FF">**Locality Sensitive Hashing (LSH):**</span> A family $\mathcal{H}$ of hash functions is called <span style="color: #6FA8FF">**$(R, cR, P_1, P_2)$-sensitive**</span> if for any $x, y \in \mathbb{R}^d$,
 
 - if $\|x - y\| \leq R$, then $\Pr_{h \in \mathcal{H}}[h(x) = h(y)] \geq P_1$
 - if $\|x - y\| \geq cR$, then $\Pr_{h \in \mathcal{H}}[h(x) = h(y)] \leq P_2$
@@ -65,7 +65,7 @@ To find subsequent principal components, we use **deflation** to "remove" the in
 For a query point $q$, let $S$ be the set of points in $X$ such that $\|x - q\| \leq R$ and $T$ be the set of points in $X$ such that $\|x - q\| \geq cR$.
 
 - $\Pr[\text{no point in } S \text{ is found}] \leq (1 - P_1^k)^L \leq e^{-L P_1^k} = e^{-n^{\rho} \cdot n^{-\rho}} = e^{-1}$
-- $\mathbb{E}[\text{number of points in } T \text{ found}] \leq |T| \cdot L P_2^k \leq n \cdot n^{\rho} \cdot n^{-\rho} = L$
+- $\mathbb{E}[\text{number of points in } T \text{ found}] \leq |T| \cdot L P_2^k \leq n \cdot n^{\rho} \cdot n^{-1} = L$
 
 By Markov's inequality, the probability that more than $2L$ points in $T$ are found is at most $\dfrac{1}{2}$. Therefore, the probability that at least one point in $S$ is found and at most $2L$ points in $T$ are found is at least $\dfrac{1}{2} - \dfrac{1}{e}$.
 
