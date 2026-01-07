@@ -7,7 +7,7 @@
 $$L(w,X,y)=\dfrac{1}{2N}\sum_{i=1}^N(w^Tx_i-y_i)^2\implies\nabla_wL(w,X,y)=\frac{1}{N}\sum_{i=1}^N(w^Tx_i-y_i)x_i$$
 For each gradient step: $w_{t+1}=w_t-\dfrac{\eta}{b}\sum_{i\in B_t}(w_t^Tx_i-y_i)x_i$. The exact minimizer is $w=(X^TX)^{-1}X^Ty$.
 
-<span style="color: #6FA8FF">**Perceptron Algorithm:**</span>
+### <span style="color: #6ED3C5">Perceptron Algorithm</span>
 
 - **Task:** Performed for **binary classification**.
 - **Convergence:** Guaranteed only for linearly separable data; the algorithm **does not converge** if the data is not linearly separable.
