@@ -174,7 +174,7 @@ $$
 
 <span style="color: #6FA8FF">**Proposition:**</span> MWU is equivalent to mirror descent with $w(x)=\sum_i x_i\log x_i$ given the constraint that $x$ lies in the probability simplex $\Delta_n=\{x\in\mathbb{R}^n:x(i)\ge 0,\sum_{i=1}^nx(i)=1\}$.
 
-<span style="color: #6FA8FF">**Proof Sketch:**</span> Taking derivative w.r.t. $y(i)$ and setting it to zero, $\log y(i)+1-\log x_k(i)+\alpha\nabla f(x_k)(i)+\lambda=0$, where $\lambda$ is the Lagrange multiplier for the constraint $\sum_{i=1}^ny(i)=1$. Therefore, $y(i)=x_k(i)\exp(-\alpha\cdot\nabla f(x_k)(i)-\lambda)$. Using the constraint gives the MWU update.
+<span style="color: #6FA8FF">**Proof Sketch:**</span> Taking derivative w.r.t. $y(i)$ and setting it to zero, $\log y(i)-\log x_k(i)+\alpha\nabla f(x_k)(i)+\lambda=0$, where $\lambda$ is the Lagrange multiplier for the constraint $\sum_{i=1}^ny(i)=1$. Therefore, $y(i)=x_k(i)\exp(-\alpha\cdot\nabla f(x_k)(i)-\lambda)$. Using the constraint gives the MWU update.
 
 <span style="color: #6FA8FF">**Jensen-Shannon Divergence:**</span> $JS(p,q)=\dfrac{1}{2}KL\left(p\Big\|\dfrac{p+q}{2}\right)+\dfrac{1}{2}KL\left(q\Big\|\dfrac{p+q}{2}\right)$
 
