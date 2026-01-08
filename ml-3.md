@@ -88,7 +88,7 @@ If $\tilde{x}_s$ is randomly picked from $\{x_0,x_1,\ldots,x_{m-1}\}$, then
 $$
 \begin{aligned}
 &\mathbb{E}[\|x_m-x^*\|^2]+2\eta(1-2L\eta)\cdot m\cdot\mathbb{E}[f(\tilde{x}_s)-f(x^*)] \\
-\le&\mathbb{E}[\|x_m-x^*\|^2]+2\eta(1-2L\eta)\cdot\sum_{t=1}^m\mathbb{E}[f(x_{t-1})-f(x^*)] \\
+=&\mathbb{E}[\|x_m-x^*\|^2]+2\eta(1-2L\eta)\cdot\sum_{t=1}^m\mathbb{E}[f(x_{t-1})-f(x^*)] \\
 \le&\|x_0-x^*\|^2+4mL\eta^2(f(\tilde{x})-f(x^*)) \\
 =&\|\tilde{x}-x^*\|^2+4mL\eta^2(f(\tilde{x})-f(x^*)) \\
 \le&\frac{2}{\mu}[f(\tilde{x})-f(x^*)]+4mL\eta^2(f(\tilde{x})-f(x^*)) \\
