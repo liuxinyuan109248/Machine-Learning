@@ -2,6 +2,8 @@
 
 ## <span style="color: #F2A07B">Lec 08 Decision Trees</span>
 
+This lecture explores the transition from simple, interpretable models to powerful ensemble architectures. We begin with <span style="color: #6FA8FF">**Decision Trees**</span>, which partition the feature space into axis-aligned rectangles using greedy criteria like <span style="color: #6FA8FF">**Gini Impurity**</span>. To address the inherent high variance of single trees, we introduce <span style="color: #6FA8FF">**Random Forests**</span>, which utilize "Bagging" and feature randomization to de-correlate individual learners. Finally, we delve into the <span style="color: #6FA8FF">**Boosting**</span> paradigm—specifically <span style="color: #6FA8FF">**AdaBoost**</span> and <span style="color: #6FA8FF">**Gradient Boosting**</span>—where weak learners are combined sequentially to minimize loss. We conclude by examining the deep theoretical connections between boosting and mirror descent, illustrating how these algorithms effectively perform optimization in functional space.
+
 ### <span style="color: #6ED3C5">Decision Trees</span>
 
 <span style="color: #6FA8FF">**Decision Trees**</span> are non-parametric supervised learning models that partition the feature space into a set of rectangular regions. The goal is to create a model that predicts the value of a target variable by learning simple decision rules inferred from the data features.

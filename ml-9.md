@@ -2,6 +2,8 @@
 
 ## <span style="color: #F2A07B">Lec 09 Nearest Neighbors</span>
 
+The <span style="color: #6FA8FF">**Nearest Neighbors**</span> framework is built on the intuitive principle that similar data points should yield similar predictions. However, applying this in high-dimensional spaces faces the "curse of dimensionality," where distances become less meaningful and computational costs skyrocket. To tackle these challenges, we explore techniques such as <span style="color: #6FA8FF">**dimension reduction**</span>, efficient nearest neighbor search algorithms like <span style="color: #6FA8FF">**Locality Sensitive Hashing (LSH)**</span>, and <span style="color: #6FA8FF">**metric learning methods**</span> that adapt distance measures to better reflect data similarities.
+
 ### <span style="color: #6ED3C5">Dimension Reduction</span>
 
 <span style="color: #6FA8FF">**Johnson-Lindenstrauss Lemma:**</span> For any $0 < \epsilon < 1$ and any integer $n$, let $k$ be a positive integer such that $k \geq \dfrac{8 \ln n}{\epsilon^2}$. For any set $X$ of $n$ points in $\mathbb{R}^d$, there exists a map $f: \mathbb{R}^d \to \mathbb{R}^k$ such that for all $u, v \in X$,

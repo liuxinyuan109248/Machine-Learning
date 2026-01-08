@@ -2,6 +2,8 @@
 
 ## <span style="color: #F2A07B">Lec 07 Support Vector Machines</span>
 
+<span style="color: #6FA8FF">**Support Vector Machines (SVMs)**</span> represent a powerful class of supervised learning algorithms based on the principle of **Structural Risk Minimization**. Unlike algorithms that focus on minimizing empirical error, SVMs aim to find a decision boundary that maximizes the "margin"—the distance between the boundary and the nearest data points (the support vectors).
+
 ### <span style="color: #6ED3C5">Hard-Margin SVM (Linearly Separable Case)</span>
 
 The goal is to find the hyperplane that maximizes the margin between two perfectly separable classes.

@@ -2,6 +2,8 @@
 
 ## <span style="color: #F2A07B">Lec 06 Linear Methods</span>
 
+<span style="color: #6FA8FF">**Linear methods**</span> form the foundation of supervised learning, providing interpretable and computationally efficient models for both regression and classification.
+
 ### <span style="color: #6ED3C5">Linear Regression</span>
 
 $$L(w,X,y)=\dfrac{1}{2N}\sum_{i=1}^N(w^Tx_i-y_i)^2\implies\nabla_wL(w,X,y)=\frac{1}{N}\sum_{i=1}^N(w^Tx_i-y_i)x_i$$
