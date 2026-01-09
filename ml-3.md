@@ -125,7 +125,7 @@ and therefore $\mathbb{E}[f(\tilde{x}_s)-f(x^*)]\le\left(\dfrac{2L\eta}{1-2L\eta
 - $\nabla V_x(y)=\nabla w(y)-\nabla w(x)$
 - $\langle\nabla V_x(y),y-u\rangle=V_y(u)+V_x(y)-V_x(u)$
 - If $w(x)=\dfrac{1}{2}\|x\|^2$, then $V_x(y)=\dfrac{1}{2}\|y-x\|^2$ (Euclidean distance)
-- If $w(x) = \sum_i x_i \log x_i$, then $V_x(y)=\sum_i y_i \log \dfrac{y_i}{x_i}$ (KL divergence)
+- If $w(x) = \sum_i x_i \log x_i$, then $V_x(y)=\sum_i y_i \log \dfrac{y_i}{x_i}$ (KL divergence), given the constraint that $x$ and $y$ lie in the probability simplex $\Delta_n=\{x\in\mathbb{R}^n:x(i)\ge 0,\sum_{i=1}^nx(i)=1\}$
   
 <span style="color: #6FA8FF">**Mirror Descent:**</span> The standard update for step $k+1$ is defined using the "mirror" map: $x_{k+1} = \text{Mirr}_x(\alpha \cdot \nabla f(x_k))$, where the operator $\text{Mirr}_x(g)$ is defined as the solution to a linearized optimization problem regularized by a **Bregman Divergence** $V_x(y)$: $\text{Mirr}_x(g) = \arg\min_{y \in \mathcal{X}} \left\{ \langle g, y - x \rangle + V_x(y) \right\}$.
 
