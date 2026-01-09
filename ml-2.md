@@ -19,7 +19,7 @@ Unsupervised learning encompasses several key techniques designed to uncover hid
 
 <span style="color: #6FA8FF">**$L$-Smoothness / Gradient Lipschitz Continuity:**</span> If $f$ is twice continuously differentiable, then the following statements are equivalent:
 
-- **(a):** $|\nabla f(y)-\nabla f(x)|\le L\|y-x\|,\forall x,y$,
+- **(a):** $\|\nabla f(y)-\nabla f(x)\|\le L\|y-x\|,\forall x,y$,
 - **(b):** $|f(y)-f(x)-\langle\nabla f(x),y-x\rangle|\le\dfrac{L}{2}\|y-x\|^2,\forall x,y$,
 - **(c):** $-L\le\lambda_{\min}(\nabla^2f(x))\le\lambda_{\max}(\nabla^2f(x))\le L$, or equivalently, $-LI\preceq\nabla^2f(x)\preceq LI,\forall x$.
 
